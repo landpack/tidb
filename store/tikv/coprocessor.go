@@ -194,7 +194,7 @@ func (r *copRanges) do(f func(ran *kv.KeyRange)) {
 	}
 }
 
-func (r *copRanges) toPBRanges() []*coprocessor.KeyRange {
+func (r *copRanges) ToPBRanges() []*coprocessor.KeyRange {
 	ranges := make([]*coprocessor.KeyRange, 0, r.len())
 	r.do(func(ran *kv.KeyRange) {
 		ranges = append(ranges, &coprocessor.KeyRange{
@@ -431,7 +431,7 @@ func (it *copIterator) handleTask(bo *Backoffer, task *copTask) []copResponse {
 		req := &coprocessor.Request{
 			Tp:     it.req.Tp,
 			Data:   it.req.Data,
-			Ranges: task.ranges.toPBRanges(),
+			Ranges: task.ranges.ToPBRanges(),
 		}
 		resp, err := sender.SendCopReq(req, task.region, readTimeoutMedium)
 		if err != nil {
